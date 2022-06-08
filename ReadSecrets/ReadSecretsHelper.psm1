@@ -141,6 +141,7 @@ function GetKeyVaultSecret {
 
     if ($keyVaultSecret) {
         $value = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(([Runtime.InteropServices.Marshal]::SecureStringToBSTR($keyVaultSecret.SecretValue)))
+        $value = Convert-ToBase64 -value $value
         MaskValueInLog -key $secret -value $value
         return $value
     }
