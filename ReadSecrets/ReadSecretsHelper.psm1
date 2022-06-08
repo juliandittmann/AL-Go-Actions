@@ -31,6 +31,7 @@ function GetGithubSecret {
     if ($script:gitHubSecrets.PSObject.Properties.Name -eq $secret) {
         $value = $script:githubSecrets."$secret"
         if ($value) {
+            $value = Convert-ToBase64 -value $value
             MaskValueInLog -key $secret -value $value
             Add-Content -Path $env:GITHUB_ENV -Value "$envVar=$value"
             return $value
