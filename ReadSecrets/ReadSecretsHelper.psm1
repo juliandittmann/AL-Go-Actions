@@ -173,3 +173,11 @@ function GetSecret {
     Write-Host  "Could not find secret $secret in Github secrets or Azure Key Vault."
     return $null
 }
+
+function Convert-ToBase64 {
+    param (
+        [string] $value
+    )
+    $encodedValue = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($value))
+    return $encodedValue
+}
