@@ -20,6 +20,17 @@ $bcContainerHelperPath = $null
 
 # IMPORTANT: No code that can fail should be outside the try/catch
 
+#Temp
+function Convert-FromBase64 {
+    Param(
+        [string] $value
+    )
+    $decodedValue = [System.Text.Encoding]::Utf8.GetString([System.Convert]::FromBase64String($value))
+    return $decodedValue
+}
+
+
+#
 try {
     . (Join-Path -Path $PSScriptRoot -ChildPath "..\AL-Go-Helper.ps1" -Resolve)
     $BcContainerHelperPath = DownloadAndImportBcContainerHelper -baseFolder $ENV:GITHUB_WORKSPACE 
@@ -50,7 +61,7 @@ try {
     $appRevision = $settings.appRevision
     'licenseFileUrl','insiderSasToken','CodeSignCertificateUrl','CodeSignCertificatePassword','KeyVaultCertificateUrl','KeyVaultCertificatePassword','KeyVaultClientId','StorageContext','ApplicationInsightsConnectionString' | ForEach-Object {
         if ($secrets.ContainsKey($_)) {
-            $value = $secrets."$_"
+            $value = Convert-FromBase64 -value $secrets."$_"
         }
         else {
             $value = ""
